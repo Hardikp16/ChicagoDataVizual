@@ -14,7 +14,7 @@
         .attr("width", 1200)
         .attr("height", 800);
 
-    d3.json("http://www.chicagohealthatlas.org/map/healthcare_providers_dentists.json", function(json) {
+    d3.json("http://www.chicagohealthatlas.org/map/healthcare_providers_dentists.json", function(error, json) {
             var center = d3.geo.centroid(json)
             var scale  = 80000;
             var offset = [400, 400];
