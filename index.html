@@ -1,33 +1,120 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
+	<meta charset="UTF-8">
+	<meta content="utf-8" http-equiv="encoding"> 
     <title>Chicago</title>
-     <script src="d3/d3.min.js"></script>
- </head>
-  <body bgcolor="#000000">
-        <div id="viz" style="width:100%; height:100%; float:left; background: #888"></div>
- </div> 
-  </div>
+	<script src="http://d3js.org/d3.v3.min.js"></script>
+	<script src="http://d3js.org/topojson.v1.min.js"></script>
+	<script src="raphael-min.js"></script>
+    
+		
+</head>
+
+	
+
+<body bgcolor="#FF8C00">
+	<h1> CS424: Project 1 </h1>
+        <div id="viz" style="width:100%; height:100%; float:left; background: #87CEFA"></div>
 <script>
-    var   svg = d3.select("#viz")
-        .append("svg:svg")
-        .attr("width", 1200)
-        .attr("height", 800);
+	var width = 1200
+		height = 1200;
 
-    d3.json("http://www.chicagohealthatlas.org/map/healthcare_providers_dentists.json", function(error, json) {
-            var center = d3.geo.centroid(json)
-            var scale  = 80000;
-            var offset = [400, 400];
-            var projection = d3.geo.mercator().scale(scale).center(center)
-                .translate(offset);
-            var path = d3.geo.path().projection(projection);
+		
+	var projection = d3
+    				.geo.albers() 
+				    .translate([width / 2, height / 2]) 
+				    .scale(162000) 
+				    .rotate([87.627, 0]) 
+				    .center([0, 41.851]); 
+		
+	var path = d3.geo.path()
+		.projection(projection);
+		
+	var Chicago = [];
+	Chicago.length = 77;
+		
+	// using topojson 	
+    var svg = d3.select("#viz")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height);
 
-            svg.selectAll("path")
-               .data(json.features)
+		d3.json("us.json", function(error, us) {
+			if (error) return console.error(error);
+			mapJson = us;
+				
+				
+			svg.selectAll("path")
+               .data(topojson.feature(us, us.objects.collection).features)
                .enter()
-               .append("path")
-               .attr("d", path);
-    });
+               .append("svg:path")
+               .attr("d", path)
+			   .attr("fill", "gray");
+
+			});
+			
+	  var g = svg.append("g")
+		.attr("transform", "translate(" + 0 / 2 + "," + 0 / 2 + ")")
+		.append("g");
+
+		// print city label but prints it in the background
+		d3.json("healthcare_providers_dentists.json", function(json) {
+			g.selectAll("text.labels")
+			.data(json.features)
+			.attr("x",function(d){
+				return path.centroid(d)[0];                         
+			})
+			.attr("y", function(d){
+				return path.centroid(d)[1];                         
+			}) 
+			.enter()                        
+			.append("text")
+			.text(function(d){
+				return d.properties.name;
+			})
+			.attr("x",function(d){
+				return path.centroid(d)[0];                         
+			})
+			.attr("y", function(d){
+				return path.centroid(d)[1];
+			})
+			.attr("text-align", "top")
+			.attr("text-anchor", "middle")
+			.attr('font-size', '7px')
+			.append("text");
+			
+			});
+		
+		d3.csv('areasalarys.csv', function(d){
+			for ( var i = 0; i< d.length; i++)
+			{
+				Chicago.push({ name: d[i].name});
+			}
+			});
+			
+         
+
+		
+		
+
+			   
 </script>
+<!-- Third Pie Chart will consist of the gender from the year 2010-->
+			<g>
+           <text x="1685" y="700">Gender Group (2010)</text>
+           <svg width="2000" height="2000">
+             <circle cx="1750" cy="200" r="75" fill="black" />
+           </svg>
+           <svg width="2000" height="2000">
+             <circle cx="1750" cy="400" r="75" fill="purple" />
+           </svg>
+           <svg width="2000" height="2000">
+             <circle cx="1750" cy="600" r="75" fill="blue" />
+           </svg>
+           <svg width="2000" height="2000">
+             <circle cx="1750" cy="800" r="75" fill="red" />
+           </svg>
+         </g>
   </body>
 </html>
