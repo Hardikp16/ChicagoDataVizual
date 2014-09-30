@@ -13,93 +13,14 @@
 
 <body bgcolor="#FF8C00">
 <h1> CS424: Project 1 </h1>
-	<div id="viz">
+	<div id="viz"></div >
 	 <div id="map" style="width:100%; height:100%; float:left; background: #87CEFA">
 	 <div id="chicago" style="right: 50%; bottom: 40%; position: absolute;">
 		<h4> Chicago Salary </h4>
-	 <div id="select1" style="right: 40%; bottom: 0%; position: absolute;";> 
-		<select name="Chicago-district">
-			<option value="Rogers Park">Rogers Park</option>
-			<option value="West Ridge">West Ridge</option>
-			<option value="Uptown">Uptown</option>
-			<option value="Lincoln Square">Lincoln Square</option>
-			<option value="North Center">North Center</option>
-			<option value="Lake View">Lake View</option>
-			<option value="Lincoln Park">Lincoln Park</option>
-			<option value="Near North Side">Near North Side</option>
-			<option value="Edison Park">Edison Park</option>
-			<option value="Norwood Park">Norwood Park</option>
-			<option value="Jefferson Park">Jefferson Park</option>
-			<option value="Forest Glen">Forest Glen</option>
-			<option value="North Park">North Park</option>
-			<option value="Albany Park">Albany Park</option>
-			<option value="Portage Park">Portage Park</option>
-			<option value="Irving Park">Irving Park</option>
-			<option value="Dunning">Dunning</option>
-			<option value="Montclare">Montclare</option>
-			<option value="Belmont Cragin">Belmont Cragin</option>
-			<option value="Hermosa">Hermosa</option>
-			<option value="Avondale">Avondale</option>
-			<option value="Logan Square">Logan Square</option>
-			<option value="Humboldt Park">Humboldt Park</option>
-			<option value="West Town">West Town</option>
-			<option value="Austin">Austin</option>
-			<option value="West Garfield Park">West Garfield Park</option>
-			<option value="East Garfield Park">East Garfield Park</option>
-			<option value="Near West Side">Near West Side</option>
-			<option value="North Lawndale">North Lawndale</option>
-			<option value="South Lawndale">South Lawndale</option>
-			<option value="Lower West Sid">Lower West Sid</option>
-			<option value="Loop">Loop</option>
-			<option value="Near South Side">Near South Side</option>
-			<option value="Armour Square">Armour Square</option>
-			<option value="Douglas">Douglas</option>
-			<option value="Oakland">Oakland</option>
-			<option value="Fuller Park">Fuller Park</option>
-			<option value="Grand Boulevard">Grand Boulevard</option>
-			<option value="Kenwood">Kenwood</option>
-			<option value="Washington Park">Washington Park</option>
-			<option value="Hyde Park">Hyde Park</option>
-			<option value="Woodlawn">Woodlawn</option>
-			<option value="South Shore">South Shore</option>
-			<option value="Chatham">Chatham</option>
-			<option value="Avalon Park">Avalon Park</option>
-			<option value="South Chicago">South Chicago</option>
-			<option value="Burnside">Burnside</option>
-			<option value="Calumet Heights">Calumet Heights</option>
-			<option value="Roseland">Roseland</option>
-			<option value="Pullman">Pullman</option>
-			<option value="South Deering">South Deering</option>
-			<option value="East Side">East Side</option>
-			<option value="West Pullman">West Pullman</option>
-			<option value="Riverdale">Riverdale</option>
-			<option value="Hegewisch">Hegewisch</option>
-			<option value="Garfield Ridge">Garfield Ridge</option>
-			<option value="Archer Heights">Archer Heights</option>
-			<option value="Brighton Park">Brighton Park</option>
-			<option value="Mckinley Park">Mckinley Park</option>
-			<option value="Bridgeport">Bridgeport</option>
-			<option value="New City">New City</option>
-			<option value="West Elsdon">West Elsdon</option>
-			<option value="West Elsdon">West Elsdon</option>
-			<option value="Clearing">Clearing</option>
-			<option value="West Lawn">West Lawn</option>
-			<option value="Chicago Lawn">Chicago Lawn</option>
-			<option value="West Englewood">West Englewood</option>
-			<option value="Englewood">Englewood</option>
-			<option value="Greater Grand Crossing">Greater Grand Crossing</option>
-			<option value="Auburn Gresham">Auburn Gresham</option>
-			<option value="Beverly">New City</option>
-			<option value="Washington Heights">Washington Heights</option>
-			<option value="Mount Greenwood">Mount Greenwood</option>
-			<option value="Morgan Park">Morgan Park</option>
-			<option value="Ohare">Ohare</option>
-			<option value="Edgewater">Edgewater</option>
-		 </select>
-	</div >
-	 </div>
+		<div id="agebyrace" style="right: 100%; bottom: 0%; position: absolute;"></div>
 	</div>
 	</div>
+	
 <script>
 	var width = 1300
 		height = 1200;
@@ -118,7 +39,7 @@
 	var Chicago = [];
 	Chicago.length = 77;
 			
-    var svg = d3.select("#map")
+    var Chi = d3.select("#map")
         .append("svg")
         .attr("width", width-400)
         .attr("height", height);
@@ -128,7 +49,7 @@
 			mapJson = us;
 				
 				
-			svg.selectAll("path")
+			Chi.selectAll("path")
                .data(topojson.feature(us, us.objects.collection).features)
                .enter()
                .append("svg:path")
@@ -137,13 +58,13 @@
 
 			});
 			
-	  var g = svg.append("g")
+	  var g = Chi.append("g")
 		.attr("transform", "translate(" + 0 / 2 + "," + 0 / 2 + ")")
 		.append("g");
 
 		// print city label but prints it in the background
 		d3.json("healthcare_providers_dentists.json", function(json) {
-			svg.selectAll("text.labels")
+			Chi.selectAll("text.labels")
 			.data(json.features)
 			.attr("x",function(d){
 				return path.centroid(d)[0];                         
@@ -173,7 +94,7 @@
 	
 
 
-// Coerce population counts to numbers and compute total per state.
+// Coerce population counts to numbers and compute total per race.
 function type(d) {
   d.total = d3.sum(groups, function(k) { return d[k] = +d[k]; });
   return d;
@@ -192,6 +113,59 @@ function type(d) {
             {"label":"45k-75k", "value":332505},
 			{"label":"75k+", "value":200080}];
 
+			
+		var race = [
+        {
+        "Race": "Non-Hispanic-White",
+        "Under 10 Years": 65751,
+        "10 to 19 Years": 53297,
+        "20 to 24 Years": 75304,
+		"25 to 29 Years": 121332,
+		"30 to 49 Years": 275612,
+		"50 to 64 Years": 151235,
+		"65+ Years": 112189
+        },
+        {
+        "Race": "Non-Hispanic-Black",
+        "Under 10 Years": 116259,
+        "10 to 19 Years": 141679,
+        "20 to 24 Years": 62656,
+		"25 to 29 Years": 58114,
+		"30 to 49 Years": 224857,
+		"50 to 64 Years": 160592,
+		"65+ Years": 108129
+        },
+        {
+        "Race": "Non-Hispanic-NA",
+        "Under 10 Years": 1331,
+        "10 to 19 Years": 1066,
+        "20 to 24 Years": 734,
+		"25 to 29 Years": 906,
+		"30 to 49 Years": 2427,
+		"50 to 64 Years": 1255,
+		"65+ Years": 605
+        },
+        {
+        "Race": "Non-Hispanic-Asian",
+        "Under 10 Years": 13379,
+        "10 to 19 Years": 12452,
+        "20 to 24 Years": 14394,
+		"25 to 29 Years": 19859,
+		"30 to 49 Years": 47805,
+		"50 to 64 Years": 22485,
+		"65+ Years": 15086
+        },
+        {
+        "Race": "Hispanic",
+        "Under 10 Years": 147013,
+        "10 to 19 Years": 133659,
+        "20 to 24 Years": 66455,
+		"25 to 29 Years": 71740,
+		"30 to 49 Years": 229678,
+		"50 to 64 Years": 90580,
+		"65+ Years": 39737
+        }
+    ];	
 		var vis = d3.select('#chicago').append("svg:svg").data([data]).attr("width", w).attr("height", h).append("svg:g").attr("transform", "translate(" + r + "," + r + ")");
 		var pie = d3.layout.pie().value(function(d){return d.value;});
 
@@ -216,7 +190,99 @@ function type(d) {
 					d.outerRadius = r;
 			return "translate(" + arc.centroid(d) + ")";}).attr("text-anchor", "middle").text( function(d, i) {
 			return data[i].label;}
-				);   
+				);
+
+				
+		// bar graph
+	
+		var margin = {top: 20, right: 20, bottom: 30, left: 40},
+		width = 960 - margin.left - margin.right,
+		height = 500 - margin.top - margin.bottom;
+    
+		var x = d3.scale.ordinal()
+		.rangeRoundBands([0, width], .1);
+		
+		var y = d3.scale.linear()
+		.rangeRound([height, 0]);
+		
+		var color = d3.scale.ordinal()
+		.range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+		
+		var xAxis = d3.svg.axis()
+		.scale(x)
+		.orient("bottom");
+		
+		var yAxis = d3.svg.axis()
+		.scale(y)
+		.orient("left")
+		.tickFormat(d3.format(".2s"));
+		
+		var svg = d3.select("body").append("svg")
+		.attr("width", width + margin.left + margin.right)
+		.attr("height", height + margin.top + margin.bottom)
+		.append("g")
+		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+		
+		color.domain(d3.keys(race[0]).filter(function(key) { return key !== "Race"; }));
+
+race.forEach(function(d) {
+var y0 = 0;
+d.ages = color.domain().map(function(name) { return {name: name, y0: y0, y1: y0 += +d[name]}; });
+d.total = d.ages[d.ages.length - 1].y1;
+});
+
+
+x.domain(race.map(function(d) { return d.Race; }));
+y.domain([0, d3.max(race, function(d) { return d.total; })]);
+
+ svg.append("g")
+  .attr("class", "x axis")
+  .attr("transform", "translate(0," + height + ")")
+  .call(xAxis);
+
+ svg.append("g")
+  .attr("class", "y axis")
+  .call(yAxis)
+ .append("text")
+  .attr("transform", "rotate(-90)")
+  .attr("y", 6)
+  .attr("dy", ".71em")
+  .style("text-anchor", "end")
+  .text("Population");
+
+ var race = svg.selectAll(".race")
+  .data(race)
+ .enter().append("g")
+  .attr("class", "g")
+  .attr("transform", function(d) { return "translate(" + x(d.Race) + ",0)"; });
+
+ race.selectAll("rect")
+  .data(function(d) { return d.ages; })
+ .enter().append("rect")
+  .attr("width", x.rangeBand()) 
+  .attr("y", function(d) { return y(d.y1); })
+  .attr("height", function(d) { return y(d.y0) - y(d.y1); })
+  .style("fill", function(d) { return color(d.name); });
+
+ var legend = svg.selectAll(".legend")
+  .data(color.domain().slice().reverse())
+ .enter().append("g")
+  .attr("class", "legend")
+  .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+
+  legend.append("rect")
+  .attr("x", width - 18)
+  .attr("width", 18)
+  .attr("height", 18)
+  .style("fill", color);
+
+  legend.append("text")
+  .attr("x", width - 24)
+  .attr("y", 9)
+  .attr("dy", ".35em")
+  .style("text-anchor", "end")
+  .text(function(d) { return d; });
+
 </script>
 
 </body>
