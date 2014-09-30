@@ -6,18 +6,102 @@
     <title>Chicago</title>
 	<script src="http://d3js.org/d3.v3.min.js"></script>
 	<script src="http://d3js.org/topojson.v1.min.js"></script>
-	<script src="raphael-min.js"></script>
+	<link rel="stylesheet" type="text/css" href="layout.css">
     
 		
 </head>
 
-	
-
 <body bgcolor="#FF8C00">
-	<h1> CS424: Project 1 </h1>
-        <div id="viz" style="width:100%; height:100%; float:left; background: #87CEFA"></div>
+<h1> CS424: Project 1 </h1>
+	<div id="viz">
+	 <div id="map" style="width:100%; height:100%; float:left; background: #87CEFA">
+	 <div id="chicago" style="right: 50%; bottom: 40%; position: absolute;">
+		<h4> Chicago Salary </h4>
+	 <div id="select1" style="right: 40%; bottom: 0%; position: absolute;";> 
+		<select name="Chicago-district">
+			<option value="Rogers Park">Rogers Park</option>
+			<option value="West Ridge">West Ridge</option>
+			<option value="Uptown">Uptown</option>
+			<option value="Lincoln Square">Lincoln Square</option>
+			<option value="North Center">North Center</option>
+			<option value="Lake View">Lake View</option>
+			<option value="Lincoln Park">Lincoln Park</option>
+			<option value="Near North Side">Near North Side</option>
+			<option value="Edison Park">Edison Park</option>
+			<option value="Norwood Park">Norwood Park</option>
+			<option value="Jefferson Park">Jefferson Park</option>
+			<option value="Forest Glen">Forest Glen</option>
+			<option value="North Park">North Park</option>
+			<option value="Albany Park">Albany Park</option>
+			<option value="Portage Park">Portage Park</option>
+			<option value="Irving Park">Irving Park</option>
+			<option value="Dunning">Dunning</option>
+			<option value="Montclare">Montclare</option>
+			<option value="Belmont Cragin">Belmont Cragin</option>
+			<option value="Hermosa">Hermosa</option>
+			<option value="Avondale">Avondale</option>
+			<option value="Logan Square">Logan Square</option>
+			<option value="Humboldt Park">Humboldt Park</option>
+			<option value="West Town">West Town</option>
+			<option value="Austin">Austin</option>
+			<option value="West Garfield Park">West Garfield Park</option>
+			<option value="East Garfield Park">East Garfield Park</option>
+			<option value="Near West Side">Near West Side</option>
+			<option value="North Lawndale">North Lawndale</option>
+			<option value="South Lawndale">South Lawndale</option>
+			<option value="Lower West Sid">Lower West Sid</option>
+			<option value="Loop">Loop</option>
+			<option value="Near South Side">Near South Side</option>
+			<option value="Armour Square">Armour Square</option>
+			<option value="Douglas">Douglas</option>
+			<option value="Oakland">Oakland</option>
+			<option value="Fuller Park">Fuller Park</option>
+			<option value="Grand Boulevard">Grand Boulevard</option>
+			<option value="Kenwood">Kenwood</option>
+			<option value="Washington Park">Washington Park</option>
+			<option value="Hyde Park">Hyde Park</option>
+			<option value="Woodlawn">Woodlawn</option>
+			<option value="South Shore">South Shore</option>
+			<option value="Chatham">Chatham</option>
+			<option value="Avalon Park">Avalon Park</option>
+			<option value="South Chicago">South Chicago</option>
+			<option value="Burnside">Burnside</option>
+			<option value="Calumet Heights">Calumet Heights</option>
+			<option value="Roseland">Roseland</option>
+			<option value="Pullman">Pullman</option>
+			<option value="South Deering">South Deering</option>
+			<option value="East Side">East Side</option>
+			<option value="West Pullman">West Pullman</option>
+			<option value="Riverdale">Riverdale</option>
+			<option value="Hegewisch">Hegewisch</option>
+			<option value="Garfield Ridge">Garfield Ridge</option>
+			<option value="Archer Heights">Archer Heights</option>
+			<option value="Brighton Park">Brighton Park</option>
+			<option value="Mckinley Park">Mckinley Park</option>
+			<option value="Bridgeport">Bridgeport</option>
+			<option value="New City">New City</option>
+			<option value="West Elsdon">West Elsdon</option>
+			<option value="West Elsdon">West Elsdon</option>
+			<option value="Clearing">Clearing</option>
+			<option value="West Lawn">West Lawn</option>
+			<option value="Chicago Lawn">Chicago Lawn</option>
+			<option value="West Englewood">West Englewood</option>
+			<option value="Englewood">Englewood</option>
+			<option value="Greater Grand Crossing">Greater Grand Crossing</option>
+			<option value="Auburn Gresham">Auburn Gresham</option>
+			<option value="Beverly">New City</option>
+			<option value="Washington Heights">Washington Heights</option>
+			<option value="Mount Greenwood">Mount Greenwood</option>
+			<option value="Morgan Park">Morgan Park</option>
+			<option value="Ohare">Ohare</option>
+			<option value="Edgewater">Edgewater</option>
+		 </select>
+	</div >
+	 </div>
+	</div>
+	</div>
 <script>
-	var width = 1200
+	var width = 1300
 		height = 1200;
 
 		
@@ -33,11 +117,10 @@
 		
 	var Chicago = [];
 	Chicago.length = 77;
-		
-	// using topojson 	
-    var svg = d3.select("#viz")
+			
+    var svg = d3.select("#map")
         .append("svg")
-        .attr("width", width)
+        .attr("width", width-400)
         .attr("height", height);
 
 		d3.json("us.json", function(error, us) {
@@ -60,7 +143,7 @@
 
 		// print city label but prints it in the background
 		d3.json("healthcare_providers_dentists.json", function(json) {
-			g.selectAll("text.labels")
+			svg.selectAll("text.labels")
 			.data(json.features)
 			.attr("x",function(d){
 				return path.centroid(d)[0];                         
@@ -81,40 +164,60 @@
 			})
 			.attr("text-align", "top")
 			.attr("text-anchor", "middle")
-			.attr('font-size', '7px')
+			.attr('font-size', '9px')
 			.append("text");
 			
 			});
 		
-		d3.csv('areasalarys.csv', function(d){
-			for ( var i = 0; i< d.length; i++)
-			{
-				Chicago.push({ name: d[i].name});
-			}
+	
+	
+
+
+// Coerce population counts to numbers and compute total per state.
+function type(d) {
+  d.total = d3.sum(groups, function(k) { return d[k] = +d[k]; });
+  return d;
+}
+	
+		
+	
+		var w = 400;
+		var h = 400;
+		var r = h/2;
+		var color = d3.scale.category20c();
+
+
+		var data = [{"label":"<25k", "value":300788}, 
+            {"label":"25k-45k", "value":199649}, 
+            {"label":"45k-75k", "value":332505},
+			{"label":"75k+", "value":200080}];
+
+		var vis = d3.select('#chicago').append("svg:svg").data([data]).attr("width", w).attr("height", h).append("svg:g").attr("transform", "translate(" + r + "," + r + ")");
+		var pie = d3.layout.pie().value(function(d){return d.value;});
+
+		// declare an arc generator function
+		var arc = d3.svg.arc().outerRadius(r);
+
+		// select paths, use arc generator to draw
+		var arcs = vis.selectAll("g.slice").data(pie).enter().append("svg:g").attr("class", "slice");
+		arcs.append("svg:path")
+			.attr("fill", function(d, i){
+				return color(i);
+			})
+			.attr("d", function (d) {
+				// log the result of the arc generator to show how cool it is :)
+				console.log(arc(d));
+				return arc(d);
 			});
-			
-         
 
-		
-		
-
-			   
+		// add the text
+		arcs.append("svg:text").attr("transform", function(d){
+					d.innerRadius = 0;
+					d.outerRadius = r;
+			return "translate(" + arc.centroid(d) + ")";}).attr("text-anchor", "middle").text( function(d, i) {
+			return data[i].label;}
+				);   
 </script>
-<!-- Third Pie Chart will consist of the gender from the year 2010-->
-			<g>
-           <text x="1685" y="700">Gender Group (2010)</text>
-           <svg width="2000" height="2000">
-             <circle cx="1750" cy="200" r="75" fill="black" />
-           </svg>
-           <svg width="2000" height="2000">
-             <circle cx="1750" cy="400" r="75" fill="purple" />
-           </svg>
-           <svg width="2000" height="2000">
-             <circle cx="1750" cy="600" r="75" fill="blue" />
-           </svg>
-           <svg width="2000" height="2000">
-             <circle cx="1750" cy="800" r="75" fill="red" />
-           </svg>
-         </g>
-  </body>
+
+</body>
 </html>
